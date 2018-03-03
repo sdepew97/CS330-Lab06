@@ -20,7 +20,7 @@ public class Lab06 {
         if (numberLines == -1) {
             System.out.println("I am sorry, but there was an error reading in the data.");
         } else {
-            System.out.println("There are " + numberLines + " in the database.");
+            System.out.println("\n\nThere are " + numberLines + " lines in the database.");
         }
 
         //allow the user to query the newly read in information
@@ -47,7 +47,9 @@ public class Lab06 {
     private static int readInData() {
         int numLines = -1; //default return value
         try {
-            URL url = new URL("https://cs.brynmawr.edu/Courses/cs330/spring2018/testZip.txt");
+//            URL url = new URL("https://cs.brynmawr.edu/Courses/cs330/spring2018/testZip.txt");
+            URL url = new URL("https://cs.brynmawr.edu/Courses/cs330/spring2018/uszipcodes.csv");
+
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String inputLine = in.readLine();
@@ -58,9 +60,7 @@ public class Lab06 {
             while ((inputLine = in.readLine()) != null) {
                 tokens = inputLine.split(",");
                 String stateAndTown = tokens[1] + ", " + tokens[2];
-                System.out.println(stateAndTown);
                 data.put(Integer.parseInt(tokens[0]), stateAndTown);
-                System.out.println(data.get(Integer.parseInt(tokens[0])));
             }
 
             in.close();
