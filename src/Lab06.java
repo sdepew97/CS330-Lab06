@@ -1,4 +1,3 @@
-import javax.sound.midi.SysexMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +10,6 @@ public class Lab06 {
     public static boolean EXIT = false;
     private static String line = new String();
     private static int zipCode;
-    private static String returnValue = new String();
     private static HashMap<Integer, String> data = new HashMap<>();
 
     public static void main(String args[]) {

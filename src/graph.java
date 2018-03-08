@@ -1,18 +1,10 @@
-import javax.sound.midi.SysexMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Scanner;
 
 public class graph {
-    public static boolean EXIT = false;
-    private static String line = new String();
-    private static int zipCode;
-    private static String returnValue = new String();
-    private static HashMap<Integer, String> data = new HashMap<>();
     private static float N = 50000; //starting value
     private static float numLines = 42613;
 
@@ -20,24 +12,23 @@ public class graph {
         //read in that
         int numberLines;
 
-        while((numberLines = readInData(N)) != 0) {
-            System.out.println("At N = " + (int) N + " we get " + numberLines + " collisions and a load factor of " + (numLines/N));
+        while ((numberLines = readInData(N)) != 0) {
+            System.out.println("At N = " + (int) N + " we get " + numberLines + " collisions and a load factor of " + (numLines / N));
             N += 50000;
         }
 
-        System.out.println("At N = " + (int) N + " we get " + numberLines + " collisions and a load factor of " + (numLines/N));
+        System.out.println("At N = " + (int) N + " we get " + numberLines + " collisions and a load factor of " + (numLines / N));
     }
 
-    //used code/tutorial found on https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html
+    //used similar code to tutorial found on https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html to understand reading from URL's
     private static int readInData(float N) {
         int[] collisions = new int[(int) N];
         try {
-//            URL url = new URL("https://cs.brynmawr.edu/Courses/cs330/spring2018/testZip.txt");
             URL url = new URL("https://cs.brynmawr.edu/Courses/cs330/spring2018/uszipcodes.csv");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 
-            String inputLine = in.readLine();
+            String inputLine = in.readLine(); //read in and remove the first line
             String[] tokens;
 
 
@@ -55,18 +46,24 @@ public class graph {
             e.printStackTrace();
         }
 
-        return collisionsNumber(collisions);
+        return collisionsNumber(collisions, (int) N);
     }
 
-    private static int collisionsNumber(int[] collisions) {
+    private static int collisionsNumber(int[] collisions, int N) {
+        int maxCollisions = 0;
+        int entriesWithCollisions = 0;
         int totalCollisions = 0;
         for (int i = 0; i < collisions.length; i++) {
-//            System.out.println("Row " + i + " and value of " + collisions[i]);
-            if(collisions[i]>1) {
-                totalCollisions += (collisions[i]-1);
+            if (collisions[i] > 1) {
+                totalCollisions += (collisions[i] - 1);
+                entriesWithCollisions++;
+                if(collisions[i]-1 > maxCollisions) {
+                    maxCollisions = collisions[i]-1;
+                }
             }
         }
-
+        System.out.println("Number of entries with collisions " + entriesWithCollisions + " " +
+                "and max collisions in one spot, " + maxCollisions + " overall for N = " + N);
         return totalCollisions;
     }
 }
